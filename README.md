@@ -4,7 +4,7 @@ Linear Equations,
 quadratic equations, 
 polynomial equations (with Java).
 
-## class description
+## Class description
  EquationSolver
  This is the main class that manages the overall program flow.
  It takes user input, determines the type of equation, and delegates the solving process to the appropriate solver       class.
