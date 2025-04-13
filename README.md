@@ -5,7 +5,7 @@ quadratic equations,
 polynomial equations (with Java).
 
 ## Class description
- EquationSolver
+ ###1. EquationSolver
  This is the main class that manages the overall program flow.
  It takes user input, determines the type of equation, and delegates the solving process to the appropriate solver       class.
  
@@ -15,7 +15,7 @@ polynomial equations (with Java).
  solveEquation(Equation eq): Calls the appropriate solver method based on the equation type.
  
  
- Equation (Abstract Class)
+ ###2. Equation (Abstract Class)
  A parent class for different types of equations (linear, quadratic, etc.).
  Contains common attributes like coefficients and methods for validation.
  
@@ -24,7 +24,7 @@ polynomial equations (with Java).
  solve(): An abstract method that must be implemented by subclasses to solve the equation.
  
  
- LinearEquationSolver (extends Equation)
+ ###3.LinearEquationSolver (extends Equation)
  Handles the solving process for linear equations of the form ax + b = 0.
  Implements methods to calculate and return the solution.
  
@@ -32,7 +32,7 @@ polynomial equations (with Java).
  solve(): Calculates the solution for a linear equation using x = -b / a.
  
  
- QuadraticEquationSolver (extends Equation)
+ ###4.QuadraticEquationSolver (extends Equation)
  Solves quadratic equations of the form ax² + bx + c = 0.
  Implements methods to compute real and complex solutions using the quadratic formula.
  
@@ -42,7 +42,7 @@ polynomial equations (with Java).
  getSolution(): Returns the roots in real or complex number format.
  
  
- EquationParser
+ ###5.EquationParser
  Responsible for parsing and interpreting user input.
  Extracts coefficients and equation type from the given string.
  
@@ -52,7 +52,7 @@ polynomial equations (with Java).
  isQuadratic(String equation): Checks if the equation is of the form ax² + bx + c = 0.
  
  
- ResultFormatter
+ ###6.ResultFormatter
  Formats the solution for user-friendly output.
  Converts results into a readable format, handling cases like real, complex, or no solution.
  
