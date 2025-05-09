@@ -18,6 +18,16 @@ public class LinearEquationSolver extends Equation {
     public void solve() {
         //find x
         double x = -b/a;
+        if(x == -0.0) x=0;
         System.out.println(ResultFormatter.formatSolution(new double[] {x}));
     }
+
+    public double getA() {
+        return a;
+    }
+
+    public double getB() {
+        return b;
+    }
+
 }
