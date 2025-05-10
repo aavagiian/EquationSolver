@@ -14,13 +14,36 @@ public class EquationSolverGUI extends JFrame {
     private Timer animationTimer;
 
     public EquationSolverGUI() {
-        // Set up the frame
+        // Set up the frame to maximize to full screen
         setTitle("Equation Solver");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 400);
-        getContentPane().setBackground(new Color(147, 112, 219)); // Purple background
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize to full screen
         setLocationRelativeTo(null); // Center the window
-        setLayout(new BorderLayout(10, 10));
+
+        // Get screen dimensions
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+
+        // Set up layered pane for background image
+        JLayeredPane layeredPane = new JLayeredPane();
+        setContentPane(layeredPane);
+
+        // Load and set background image with error handling
+        try {
+            ImageIcon background = new ImageIcon("/Users/aavagiian/Desktop/math-curriculum.jpg.jpg");
+            if (background.getImageLoadStatus() != MediaTracker.COMPLETE) {
+                System.err.println("Error: Image failed to load properly.");
+            }
+            // Scale the image to fit the full screen
+            Image scaledImage = background.getImage().getScaledInstance(screenWidth, screenHeight, Image.SCALE_SMOOTH);
+            background = new ImageIcon(scaledImage);
+            JLabel backgroundLabel = new JLabel(background);
+            backgroundLabel.setBounds(0, 0, screenWidth, screenHeight);
+            layeredPane.add(backgroundLabel, Integer.valueOf(0));
+        } catch (Exception e) {
+            System.err.println("Error loading background image: " + e.getMessage());
+        }
 
         // Initialize output stream for capturing System.out
         outputStream = new ByteArrayOutputStream();
@@ -28,8 +51,9 @@ public class EquationSolverGUI extends JFrame {
 
         // Input panel
         JPanel inputPanel = new JPanel(new GridLayout(1, 2, 5, 5));
+        inputPanel.setOpaque(true); // Ensure background color is visible
+        inputPanel.setBackground(Color.WHITE); // Set background to white
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        inputPanel.setBackground(new Color(173, 216, 230)); // Light blue background
 
         JLabel equationLabel = new JLabel("Equation:");
         equationLabel.setForeground(new Color(255, 165, 0)); // Orange text
@@ -48,10 +72,9 @@ public class EquationSolverGUI extends JFrame {
         });
         inputPanel.add(equationField);
 
-        add(inputPanel, BorderLayout.NORTH);
-
         // Button panel
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false); // Make panel transparent to show background
         solveButton = new JButton("Solve");
         solveButton.setVisible(true);
         solveButton.setBackground(new Color(144, 238, 144)); // Green background
@@ -61,15 +84,23 @@ public class EquationSolverGUI extends JFrame {
         clearButton.addActionListener(e -> resultArea.setText(""));
         buttonPanel.add(solveButton);
         buttonPanel.add(clearButton);
-        add(buttonPanel, BorderLayout.CENTER);
 
-        // Output area
-        resultArea = new JTextArea(15, 40);
+        // Output area (result bar)
+        resultArea = new JTextArea(5, 40); // Reduced rows to 5 to keep it smaller
         resultArea.setEditable(false);
         resultArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         resultArea.setBackground(new Color(211, 211, 211)); // Light gray background
         JScrollPane scrollPane = new JScrollPane(resultArea);
-        add(scrollPane, BorderLayout.SOUTH);
+
+        // Add components to layered pane with adjusted positions
+        int inputPanelWidth = 300; // Fixed width for the input panel
+        int inputPanelX = (screenWidth - inputPanelWidth) / 2; // Center horizontally
+        inputPanel.setBounds(inputPanelX, 0, inputPanelWidth, 50); // Center at the top
+        buttonPanel.setBounds(0, 50, screenWidth, 50);
+        scrollPane.setBounds(0, 100, screenWidth, 100); // Reduced height to 100 pixels
+        layeredPane.add(inputPanel, Integer.valueOf(1));
+        layeredPane.add(buttonPanel, Integer.valueOf(1));
+        layeredPane.add(scrollPane, Integer.valueOf(1));
 
         // Animation for blinking cursor effect
         animationTimer = new Timer(500, new ActionListener() {
